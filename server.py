@@ -15,6 +15,8 @@ PORT = 5000
 HOST_ADDR = ("0",0)
 HOST_CONFIRMED = False
 
+print("Starting.")
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind( (IP, PORT) )
 

@@ -12,6 +12,8 @@ import sys
 IP = "127.0.0.1"
 PORT = 5000
 
+print("Host.")
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 resp = bytearray()
