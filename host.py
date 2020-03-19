@@ -14,6 +14,10 @@ PORT = 5000
 CLIENT_ADDR = ("0",0)
 CLIENT_CONFIRMED = False
 
+if len(sys.argv) == 3:
+    IP = sys.argv[1]
+    PORT = int(sys.argv[2])
+
 print("Host.")
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

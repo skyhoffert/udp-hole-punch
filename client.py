@@ -15,6 +15,10 @@ PORT = 5000
 HOST_ADDR = ("0",0)
 HOST_READY = False
 
+if len(sys.argv) == 3:
+    IP = sys.argv[1]
+    PORT = int(sys.argv[2])
+
 print("Starting.")
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
