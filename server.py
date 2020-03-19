@@ -10,7 +10,7 @@ import socket
 import sys
 import struct
 
-IP = "127.0.0.1"
+IP = "0.0.0.0"
 PORT = 5000
 HOST_ADDR = ("0",0)
 HOST_CONFIRMED = False
