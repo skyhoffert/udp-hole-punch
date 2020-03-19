@@ -64,6 +64,12 @@ def ParsePayload(bar, p=False):
                 print("  CLIENT_ACK")
             rd["HOST_ADDR"] = bar[i+1:i+1+constants.DATA_LEN["CLIENT_ACK"]]
             i += constants.DATA_LEN["CLIENT_ACK"]
+        elif bar[i] == constants.TYPES["HOST_CLIENT_ADDR"]:
+            rd["HOST_CLIENT_ADDR"] = True
+            if p:
+                print("  HOST_CLIENT_ADDR")
+            rd["CLIENT_ADDR"] = bar[i+1:i+1+constants.DATA_LEN["HOST_CLIENT_ADDR"]]
+            i += constants.DATA_LEN["HOST_CLIENT_ADDR"]
         elif bar[i] == constants.TYPES["HOST_PING"]:
             rd["HOST_PING"] = True
             if p:
@@ -72,6 +78,10 @@ def ParsePayload(bar, p=False):
             rd["HOST_PONG"] = True
             if p:
                 print("  HOST_PONG")
+        elif bar[i] == constants.TYPES["CLIENT_PING"]:
+            rd["CLIENT_PING"] = True
+            if p:
+                print("  CLIENT_PING")
         else:
             print("  CNP")
         i += 1

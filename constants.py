@@ -21,6 +21,8 @@ TYPES = {
     "CLIENT_ACKACK": 8, # A client confirms it is a client to server
     "HOST_PING": 9, # A client will attempt to ping a server
     "HOST_PONG": 10, # a host will respond to a client ping
+    "HOST_CLIENT_ADDR": 11, # server provides host the client addr
+    "CLIENT_PING": 12, # A host will attempt to ping a client with this - NO pong
 }
 
 # Length of data, in bytes.
@@ -36,6 +38,7 @@ DATA_LEN = {
     "CLIENT_ACKACK": 0,
     "HOST_PING": 0,
     "HOST_PONG": 0,
+    "HOST_CLIENT_ADDR": 8,
 }
 
 # Identities. Could be a SOURCE_ID or DEST_ID

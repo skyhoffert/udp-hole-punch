@@ -14,6 +14,8 @@ IP = "0.0.0.0"
 PORT = 5000
 HOST_ADDR = ("0",0)
 HOST_CONFIRMED = False
+CLIENT_ADDR = ("0",0)
+CLIENT_CONFIRMED = False
 
 print("Starting.")
 
@@ -61,7 +63,7 @@ except KeyError:
 
 HOST_CONFIRMED = True
 
-# SERVER expects a HOST to REQ
+# SERVER expects a CLIENT to REQ
 data, addr = sock.recvfrom(4096)
 print("RX from {}".format(addr))
 rd = ParsePayload(data, True)
@@ -74,22 +76,44 @@ except KeyError:
     sock.sendto(b"", addr)
     sys.exit(0)
 
+CLIENT_ADDR = addr
+CLIENT_CONFIRMED = True
+
 resp = bytearray()
 resp.append(constants.TYPES["SOURCE_ID"])
 resp.append(constants.IDS["SERVER"])
 resp.append(constants.TYPES["DEST_ID"])
-resp.append(constants.IDS[rd["SOURCE_ID"]])
+resp.append(constants.IDS["CLIENT"])
 resp.append(constants.TYPES["CLIENT_ACK"])
 ipint = ip2long(HOST_ADDR[0])
-resp.append((ipint & 0x000000ff)) # TODO
-resp.append((ipint & 0x0000ff00) >> 8) # TODO
-resp.append((ipint & 0x00ff0000) >> 16) # TODO
-resp.append((ipint & 0xff000000) >> 24) # TODO
-resp.append((HOST_ADDR[1] & 0x000000ff)) # TODO
-resp.append((HOST_ADDR[1] & 0x0000ff00) >> 8) # TODO
-resp.append((HOST_ADDR[1] & 0x00ff0000) >> 16) # TODO
-resp.append((HOST_ADDR[1] & 0xff000000) >> 24) # TODO
+resp.append((ipint & 0x000000ff))
+resp.append((ipint & 0x0000ff00) >> 8)
+resp.append((ipint & 0x00ff0000) >> 16)
+resp.append((ipint & 0xff000000) >> 24)
+resp.append((HOST_ADDR[1] & 0x000000ff))
+resp.append((HOST_ADDR[1] & 0x0000ff00) >> 8)
+resp.append((HOST_ADDR[1] & 0x00ff0000) >> 16)
+resp.append((HOST_ADDR[1] & 0xff000000) >> 24)
 
 sock.sendto(resp, addr)
+
+# Provide client information to host.
+resp = bytearray()
+resp.append(constants.TYPES["SOURCE_ID"])
+resp.append(constants.IDS["SERVER"])
+resp.append(constants.TYPES["DEST_ID"])
+resp.append(constants.IDS["HOST"])
+resp.append(constants.TYPES["HOST_CLIENT_ADDR"])
+ipint = ip2long(CLIENT_ADDR[0])
+resp.append((ipint & 0x000000ff))
+resp.append((ipint & 0x0000ff00) >> 8)
+resp.append((ipint & 0x00ff0000) >> 16)
+resp.append((ipint & 0xff000000) >> 24)
+resp.append((CLIENT_ADDR[1] & 0x000000ff))
+resp.append((CLIENT_ADDR[1] & 0x0000ff00) >> 8)
+resp.append((CLIENT_ADDR[1] & 0x00ff0000) >> 16)
+resp.append((CLIENT_ADDR[1] & 0xff000000) >> 24)
+
+sock.sendto(resp, HOST_ADDR)
 
 print("SERVER COMPLETE!")
